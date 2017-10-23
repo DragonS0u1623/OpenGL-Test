@@ -39,4 +39,3 @@ void main(void){
 	float distance = length(positionRelativetoCam.xyz);
 	visibility = exp(-pow((distance * density), gradient));
 	visibility = clamp(visibility, 0.0, 1.0);
-}
