@@ -1,10 +1,10 @@
 #version 400 core
 
 in vec3 position;
-in vec2 textureCoords;
+in vec2 textureCoordinates;
 in vec3 normal;
 
-out vec2 pass_textureCoords;
+out vec2 pass_textureCoordinates;
 out vec3 surfaceNormal;
 out vec3 toLightVector;
 out vec3 toCameraVector;
@@ -23,9 +23,9 @@ const float gradient = 5.0;
 void main(void){
 	
 	vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
-	vec4 positionRelativetoCam = viewMatrix * worldPosition;
-	gl_Position = projectionMatrix * positionRelativetoCam;
-	pass_textureCoords = textureCoords;
+	vec4 positionReltoCam = viewMatrix * worldPosition;
+	gl_Position = projectionMatrix * positionReltoCam;
+	pass_textureCoordinates = textureCoordinates;
 	
 	vec3 actualNormal = normal;
 	if(useFakeLighting > 0.5){
@@ -36,7 +36,7 @@ void main(void){
 	toLightVector = lightPosition - worldPosition.xyz;
 	toCameraVector = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
 	
-	float distance = length(positionRelativetoCam.xyz);
+	float distance = length(positionReltoCam.xyz);
 	visibility = exp(-pow((distance * density), gradient));
 	visibility = clamp(visibility, 0.0, 1.0);
 }
