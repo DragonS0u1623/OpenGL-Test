@@ -7,18 +7,24 @@ import textures.ModelTextures;
 public class Terrain {
 	
 	private static final float SIZE = 800;
-	private static final int VERTEX_COUNT = 128;
+	private static final float MAX_HEIGHT = 40;
+	private static final float MAX_PIXEL_COLOUR = 256 * 256 * 256;
 	
 	public float x;
 	public float z;
 	private RawModel model;
-	private ModelTextures texture;
+	private TerrainTexturePack texturePack;
+	private TerrainTexture blendMap;
 	
-	public Terrain(int gridX, int gridZ, Loader loader, ModelTextures texture){
-		this.texture = texture;
+	private float[][] heights;
+	
+	public Terrain(int gridX, int gridZ, Loader loader, 
+		       TerrainTexturePack texturePack, TerrainTexture blendMap, String heightMap){
+		this.texturePack = texturePack;
+		this.blendMap = blendMap;
 		this.x = gridX * SIZE;
 		this.z = gridZ * SIZE;
-		this.model = generateTerrain(loader);
+		this.model = generateTerrain(loader, heightMap);
 	}
 	
 	
@@ -41,14 +47,30 @@ public class Terrain {
 
 
 
-	public ModelTextures getTexture() {
-		return texture;
+	public TerrrainTexturePack getTexturePack() {
+		return texturePack;
+	}
+	
+	public TerrrainTextures getBlendMap(){
+		return blendMap;
+	}
+	
+	public float getHeightOfTerrain(float worldX, float worldZ){
+		float terrainX = worldX - this.x;
+		float terrainZ = worldZ - this.z;
+		float gridSquareSize = SIZE / (float) (
 	}
 
-
-
-	private RawModel generateTerrain(Loader loader){
+	private RawModel generateTerrain(Loader loader, String heightMap){
 		
+		BufferedImage image = null;
+		try{
+			image = ImageIO.read(new File("res/" + heightMap + ".png"));
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+		int VERTEX_COUNT = image.getHeight();
+		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 		int count = VERTEX_COUNT * VERTEX_COUNT;
 		float[] vertices = new float[count * 3];
 		float[] normals = new float[count * 3];
@@ -61,11 +83,14 @@ public class Terrain {
 			for(int j = 0; j < VERTEX_COUNT; j++){
 				
 				vertices[vertexPointer * 3] = (float) j / ((float) VERTEX_COUNT - 1) * SIZE;
-				vertices[vertexPointer * 3 + 1] = 0;
+				float height = getHeight(j, i, image);
+				heights[j][i] = height;
+				vertices[vertexPointer * 3 + 1] = height;
 				vertices[vertexPointer * 3 + 2] = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
-				normals[vertexPointer * 3] = 0;
-				normals[vertexPointer * 3 + 1] = 1;
-				normals[vertexPointer * 3 + 2] = 0;
+				Vector3f normal = calculateNormal(j, i, image);
+				normals[vertexPointer * 3] = normal.x;
+				normals[vertexPointer * 3 + 1] = normal.y;
+				normals[vertexPointer * 3 + 2] = normal.z;
 				textureCoords[vertexPointer * 2] = (float) j / ((float) VERTEX_COUNT - 1);
 				textureCoords[vertexPointer * 2 + 1] = (float) i / ((float) VERTEX_COUNT - 1);
 				vertexPointer++;
