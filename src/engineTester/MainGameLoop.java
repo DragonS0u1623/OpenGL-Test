@@ -49,11 +49,11 @@ public class MainGameLoop{
         List<Entity> foliageL = new ArrayList<Entity>();
         Random random = new Random();
 	float x = random.nextFloat() * 800 - 400;
-	float y = ;
-	float z = random.nextFloat() * 800 - 400;
+	float z = random.nextFloat() * -600;
+	float y = plains.getHeightOfTerrain(x, z);
         for(int i = 0; i < 500; i++){
         	foliageL.add(new Entity(treeModel, new Vector3f(x, 
-            		0, z), 0, 0, 0, 3));
+            		y, z), 0, random.nextFloat() * 360, 0, 3f));
             
         }
         
