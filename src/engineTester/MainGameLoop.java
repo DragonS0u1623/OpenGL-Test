@@ -40,7 +40,7 @@ public class MainGameLoop{
         TerrainTextures blendMap = new TerrainTextures(loader.loadTexture("blendMap"));
         //********************************************************************************************************
         
-	Terrain plains = new Terrain(0, -1, loader, texturePack, blendMap);
+	Terrain plains = new Terrain(0, -1, loader, texturePack, blendMap, "heightMap");
 	
         ModelData data = OBJFileLoader.loadOBJ("tree");
         RawModel tree = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
