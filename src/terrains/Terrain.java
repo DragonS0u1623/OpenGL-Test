@@ -131,5 +131,14 @@ public class Terrain {
 		return loader.loadToVAO(vertices, textureCoords, normals, indices);
 	}
 	
-	
+	private float getHeight(int x, int z, BufferedImage image){
+		if(x < 0 || x >= image.getHeight() || z < 0 || z >= image.getHeight()){
+			return 0;
+		}
+		float height = image.getRGB(x, z);
+		height += MAX_PIXEL_COLOUR / 2f;
+		height /= MAX_PIXEL_COLOUR / 2f;
+		height *= MAX_HEIGHT;
+		return height;
+	}
 }
