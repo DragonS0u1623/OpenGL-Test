@@ -40,15 +40,20 @@ public class MainGameLoop{
         TerrainTextures blendMap = new TerrainTextures(loader.loadTexture("blendMap"));
         //********************************************************************************************************
         
+	Terrain plains = new Terrain(0, -1, loader, texturePack, blendMap);
+	
         ModelData data = OBJFileLoader.loadOBJ("tree");
         RawModel tree = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
         TexturedModel treeModel = new TexturedModel(tree, new ModelTextures(loader.loadTexture("tree")));
         
         List<Entity> foliageL = new ArrayList<Entity>();
         Random random = new Random();
+	float x = random.nextFloat() * 800 - 400;
+	float y = ;
+	float z = random.nextFloat() * 800 - 400;
         for(int i = 0; i < 500; i++){
-        	foliageL.add(new Entity(treeModel, new Vector3f(random.nextFloat() * 800 - 400, 
-            		0, random.nextFloat() * -600), 0, 0, 0, 3));
+        	foliageL.add(new Entity(treeModel, new Vector3f(x, 
+            		0, z), 0, 0, 0, 3));
             
         }
         
@@ -60,25 +65,20 @@ public class MainGameLoop{
         
         Light light = new Light(new Vector3f(20000, 20000, 2000),new Vector3f(1, 1, 1));
         
-        Terrain plains = new Terrain(0, -1, loader, texturePack, blendMap);
-        Terrain plains2 = new Terrain(-1, -1, loader, texturePack, blendMap);
-        
         Camera camera = new Camera();
         MasterRenderer renderer = new MasterRenderer();
         
         while(!Display.isCloseRequested()){
             camera.move();
-            player.move();
+            player.move(plains);
             renderer.processEntity(player);
             renderer.processTerrain(plains);
-            renderer.processTerrain(plains2);
             for(Entity foliage : foliageL){
                 renderer.processEntity(foliage);
             }
             renderer.render(light, camera);
             DisplayManager.updateDisplay();
-        }
-        
+	}
         renderer.cleanUp();
         loader.cleanUp();
         DisplayManager.closeDisplay();
