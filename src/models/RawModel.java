@@ -8,14 +8,16 @@ public class RawModel {
 	public RawModel(int vaoID, int vertexCount){
 		this.vaoID = vaoID;
 		this.vertexCount = vertexCount;
-		
 	}
-	
-	public int getvaoID(){
+
+	public int getVaoID() {
 		return vaoID;
 	}
-	
-	public int getvertexCount(){
+
+	public int getVertexCount() {
 		return vertexCount;
 	}
+	
+	
+
 }

@@ -1,15 +1,11 @@
 package shaders;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.opengl.*;
+import org.lwjgl.util.vector.*;
 
 public abstract class ShaderProgram {
 	
@@ -33,8 +29,8 @@ public abstract class ShaderProgram {
 	
 	protected abstract void getAllUniformLocations();
 	
-	protected int getUniformLocation(String UniformName){
-		return GL20.glGetUniformLocation(programID, UniformName);
+	protected int getUniformLocation(String uniformName){
+		return GL20.glGetUniformLocation(programID, uniformName);
 	}
 	
 	public void start(){
@@ -64,8 +60,20 @@ public abstract class ShaderProgram {
 		GL20.glUniform1f(location, value);
 	}
 	
+	protected void loadInt(int location, int value){
+		GL20.glUniform1i(location, value);
+	}
+	
 	protected void loadVector(int location, Vector3f vector){
 		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+	
+	protected void loadVector(int location, Vector4f vector){
+		GL20.glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+	}
+	
+	protected void load2DVector(int location, Vector2f vector){
+		GL20.glUniform2f(location, vector.x, vector.y);
 	}
 	
 	protected void loadBoolean(int location, boolean value){
@@ -87,21 +95,20 @@ public abstract class ShaderProgram {
 		try{
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String line;
-			while((line = reader.readLine()) !=null){
-				shaderSource.append(line).append("\n");
+			while((line = reader.readLine()) != null){
+				shaderSource.append(line).append("//\n");
 			}
 			reader.close();
 		}catch(IOException e){
-			System.err.println("Could not read file!");
 			e.printStackTrace();
 			System.exit(-1);
 		}
 		int shaderID = GL20.glCreateShader(type);
 		GL20.glShaderSource(shaderID, shaderSource);
 		GL20.glCompileShader(shaderID);
-		if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE){
+		if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS ) == GL11.GL_FALSE){
 			System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
-			System.err.println("Could not compile Shader!");
+			System.err.println("Could not compile shader!");
 			System.exit(-1);
 		}
 		return shaderID;
