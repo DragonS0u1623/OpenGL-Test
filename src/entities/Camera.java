@@ -1,4 +1,5 @@
 package entities;
+<<<<<<< HEAD
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
@@ -89,4 +90,37 @@ public class Camera {
 		float angleChange = Mouse.getDX() * 0.3f;
 		angleAroundPlayer -= angleChange;
 	}
+=======
+ 
+import org.lwjgl.util.vector.Vector3f;
+ 
+public class Camera{
+	
+    private Vector3f position = new Vector3f(0, 5, 0);
+    private float pitch = 10;
+    private float yaw;
+    private float roll;
+    
+    public Camera(){}
+    
+    public void move(){
+        
+    }
+    
+    public Vector3f getPosition(){
+        return position;
+    }
+    
+    public float getPitch(){
+        return pitch;
+    }
+    
+    public float getYaw(){
+        return yaw;
+    }
+    
+    public float getRoll(){
+        return roll;
+    }
+>>>>>>> 6c679d4d7133c9372118447529a365dc9f8e6505
 }

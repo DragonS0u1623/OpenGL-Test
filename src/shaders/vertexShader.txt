@@ -33,6 +33,7 @@ uniform vec4 plane;
 void main(void){
 
 	vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
+<<<<<<< HEAD
 	shadowCoords = toShadowMapSpace * worldPosition;
 	
 	gl_ClipDistance[0] = dot(worldPosition, plane);
@@ -40,6 +41,11 @@ void main(void){
 	vec4 positionRelativeToCam = viewMatrix * worldPosition;
 	gl_Position = projectionMatrix * positionRelativeToCam;
 	pass_textureCoordinates = (textureCoordinates/numberOfRows) + offset;
+=======
+	vec4 positionReltoCam = viewMatrix * worldPosition;
+	gl_Position = projectionMatrix * positionReltoCam;
+	pass_textureCoordinates = textureCoordinates;
+>>>>>>> 6c679d4d7133c9372118447529a365dc9f8e6505
 	
 	vec3 actualNormal = normal;
 	if(useFakeLighting > 0.5){
@@ -52,7 +58,11 @@ void main(void){
 	}
 	toCameraVector = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
 	
+<<<<<<< HEAD
 	float distance = length(positionRelativeToCam.xyz);
+=======
+	float distance = length(positionReltoCam.xyz);
+>>>>>>> 6c679d4d7133c9372118447529a365dc9f8e6505
 	visibility = exp(-pow((distance * density), gradient));
 	visibility = clamp(visibility, 0.0, 1.0);
 	
