@@ -12,16 +12,8 @@ public class NormalMappedObjLoader {
 	
 	static float furthest;
 
-	private static final String RES_LOC = "res/";
-
 	public static RawModel loadOBJ(String objFileName, Loader loader) {
-		FileReader isr = null;
-		File objFile = new File(RES_LOC + objFileName + ".obj");
-		try {
-			isr = new FileReader(objFile);
-		} catch (FileNotFoundException e) {
-			System.err.println("File not found in res; don't use any extention");
-		}
+		InputStreamReader isr = new InputStreamReader(Class.class.getResourceAsStream("/res/" + objFileName + ".obj"));
 		BufferedReader reader = new BufferedReader(isr);
 		String line;
 		List<VertexNM> vertices = new ArrayList<VertexNM>();

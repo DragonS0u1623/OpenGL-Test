@@ -1,6 +1,5 @@
 package fontMeshCreator;
 
-import java.io.File;
 import java.util.*;
 
 public class TextMeshCreator {
@@ -10,7 +9,7 @@ public class TextMeshCreator {
 
 	private MetaFile metaData;
 
-	protected TextMeshCreator(File metaFile) {
+	protected TextMeshCreator(String metaFile) {
 		metaData = new MetaFile(metaFile);
 	}
 

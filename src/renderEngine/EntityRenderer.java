@@ -15,15 +15,17 @@ public class EntityRenderer {
 
 	private StaticShader shader;
 
-	public EntityRenderer(StaticShader shader,Matrix4f projectionMatrix) {
+	public EntityRenderer(StaticShader shader, Matrix4f projectionMatrix) {
 		this.shader = shader;
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
+		shader.loadShadowMap();
 		shader.stop();
 	}
 
-	public void render(Map<TexturedModel, List<Entity>> entities) {
-		for (TexturedModel model : entities.keySet()) {
+	public void render(Map<TexturedModel, List<Entity>> entities, Matrix4f toShadowMapSpace) {
+		shader.loadToShadowMapSpaceMatrix(toShadowMapSpace);
+		for(TexturedModel model : entities.keySet()) {
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);
 			for (Entity entity : batch) {

@@ -23,8 +23,9 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 
-	public void render(List<Terrain> terrains) {
-		for (Terrain terrain : terrains) {
+	public void render(List<Terrain> terrains, Matrix4f toShadowSpace) {
+		shader.loadToShadowMapSpaceMatrix(toShadowSpace);
+		for(Terrain terrain : terrains) {
 			prepareTerrain(terrain);
 			loadModelMatrix(terrain);
 			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(),

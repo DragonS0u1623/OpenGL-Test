@@ -22,7 +22,17 @@ public class MainGameLoop {
 		
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
-		MasterRenderer renderer = new MasterRenderer(loader);
+		
+		List<Entity> entities = new ArrayList<Entity>();
+		List<Entity> normalMapEntities = new ArrayList<Entity>();
+		
+		RawModel bunnyModel = OBJLoader.loadObjModel("person", loader);
+		TexturedModel stanfordBunny = new TexturedModel(bunnyModel, new ModelTextures(
+				loader.loadTexture("playerTexture")));
+		Player player = new Player(stanfordBunny, new Vector3f(75, 5, -75), 0, 100, 0, 0.6f);
+		entities.add(player);
+		Camera camera = new Camera(player);
+		MasterRenderer renderer = new MasterRenderer(loader, camera);
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
 		//**********TERRAIN TEXTURE STUFF**********
@@ -57,9 +67,6 @@ public class MainGameLoop {
 		TexturedModel lamp = new TexturedModel(OBJLoader.loadObjModel("lamp", loader),
 				new ModelTextures(loader.loadTexture("lamp")));
 		lamp.getTexture().setUseFakeLighting(true);
-		
-		List<Entity> entities = new ArrayList<Entity>();
-		List<Entity> normalMapEntities = new ArrayList<Entity>();
 		
 		//************ENTITIES*******************
 		
@@ -96,13 +103,6 @@ public class MainGameLoop {
 		Light sun = new Light(new Vector3f(1000000, 1000000, -1000000), new Vector3f(1.3f, 1.3f, 1.3f));
 		lights.add(sun);
 		
-		RawModel bunnyModel = OBJLoader.loadObjModel("person", loader);
-		TexturedModel stanfordBunny = new TexturedModel(bunnyModel, new ModelTextures(
-				loader.loadTexture("playerTexture")));
-		
-		Player player = new Player(stanfordBunny, new Vector3f(75, 5, -75), 0, 100, 0, 0.6f);
-		entities.add(player);
-		Camera camera = new Camera(player);
 		List<GUITextures> guiTextures = new ArrayList<GUITextures>();
 		GUIRenderer guiRenderer = new GUIRenderer(loader);
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
@@ -132,8 +132,11 @@ public class MainGameLoop {
 			player.move(terrain);
 			camera.move();
 			picker.update();
+			
 			system.generateParticles(player.getPosition());
+			
 			ParticleMaster.update(camera);
+			renderer.renderShadowMap(entities, sun);
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			
 			//render reflection teture

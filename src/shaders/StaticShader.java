@@ -11,8 +11,8 @@ public class StaticShader extends ShaderProgram{
 	
 	private static final int MAX_LIGHTS = 16;
 	
-	private static final String VERTEX_FILE = "src/shaders/vertexShader.txt";
-	private static final String FRAGMENT_FILE = "src/shaders/fragmentShader.txt";
+	private static final String VERTEX_FILE = "/shaders/vertexShader.txt";
+	private static final String FRAGMENT_FILE = "/shaders/fragmentShader.txt";
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
@@ -27,6 +27,8 @@ public class StaticShader extends ShaderProgram{
 	private int location_numberOfRows;
 	private int location_offset;
 	private int location_plane;
+	private int location_toShadowMapSpace;
+	private int location_shadowMap;
 
 	public StaticShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -51,6 +53,8 @@ public class StaticShader extends ShaderProgram{
 		location_numberOfRows = super.getUniformLocation("numberOfRows");
 		location_offset = super.getUniformLocation("offset");
 		location_plane = super.getUniformLocation("plane");
+		location_toShadowMapSpace = super.getUniformLocation("toShadowMapSpace");
+		location_shadowMap = super.getUniformLocation("shadowMap");
 		
 		location_lightPosition = new int[MAX_LIGHTS];
 		location_lightColour = new int[MAX_LIGHTS];
@@ -62,8 +66,16 @@ public class StaticShader extends ShaderProgram{
 		}
 	}
 	
+	public void loadShadowMap() {
+		super.loadInt(location_shadowMap, 5);
+	}
+	
 	public void loadClipPlane(Vector4f plane){
 		super.loadVector(location_plane, plane);
+	}
+	
+	public void loadToShadowMapSpaceMatrix(Matrix4f matrix) {
+		super.loadMatrix(location_toShadowMapSpace, matrix);
 	}
 	
 	public void loadNumberOfRows(int numberOfRows){

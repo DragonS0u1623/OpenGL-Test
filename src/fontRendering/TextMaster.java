@@ -33,7 +33,8 @@ public class TextMaster {
         textBatch.add(text);
     }
      
-    public static void removeText(GUIText text){
+    @SuppressWarnings("unlikely-arg-type")
+	public static void removeText(GUIText text){
         List<GUIText> textBatch = texts.get(text.getFont());
         textBatch.remove(text);
         if(textBatch.isEmpty()){

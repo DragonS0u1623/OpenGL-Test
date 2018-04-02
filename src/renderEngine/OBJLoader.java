@@ -10,14 +10,8 @@ import models.RawModel;
 public class OBJLoader {
 
 	public static RawModel loadObjModel(String fileName, Loader loader) {
-		FileReader fr = null;
-		try {
-			fr = new FileReader(new File("res/" + fileName + ".obj"));
-		} catch (FileNotFoundException e) {
-			System.err.println("Couldn't load file!");
-			e.printStackTrace();
-		}
-		BufferedReader reader = new BufferedReader(fr);
+		InputStreamReader isr = new InputStreamReader(Class.class.getResourceAsStream("/res/" + fileName + ".obj"));
+		BufferedReader reader = new BufferedReader(isr);
 		String line;
 		List<Vector3f> vertices = new ArrayList<Vector3f>();
 		List<Vector2f> textures = new ArrayList<Vector2f>();

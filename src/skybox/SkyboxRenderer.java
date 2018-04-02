@@ -55,9 +55,10 @@ public class SkyboxRenderer {
 	     SIZE, -SIZE,  SIZE
 	};
 	
-	private static String[] TEXTURE_FILES = {"day/right", "day/left", "day/up", "day/down", "day/back", "day/front"};
-	private static String[] NIGHT_TEXTURE_FILES = {"night/nightRight", "night/nightLeft", "night/nightUp", "night/nightDown", 
-			"night/nightBack", "night/nightFront"};
+	private static String[] TEXTURE_FILES = {"skybox/day/right", "skybox/day/left", "skybox/day/up", 
+			"skybox/day/down", "skybox/day/back", "skybox/day/front"};
+	private static String[] NIGHT_TEXTURE_FILES = {"skybox/night/nightRight", "skybox/night/nightLeft", 
+			"skybox/night/nightUp", "skybox/night/nightDown", "skybox/night/nightBack", "skybox/night/nightFront"};
 	
 	private RawModel cube;
 	private int texture;

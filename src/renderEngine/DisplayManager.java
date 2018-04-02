@@ -19,8 +19,8 @@ public class DisplayManager {
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			Display.create(new PixelFormat(), attribs);
-			Display.setTitle("My Java Game");
+			Display.create(new PixelFormat().withSamples(8), attribs);
+			Display.setTitle("My First Java Game");
 			GL11.glEnable(GL13.GL_MULTISAMPLE);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
